@@ -50,7 +50,6 @@ public class DrawerPresentationController: UIPresentationController {
         drawerView.embed(view: presentedViewController.view)
 
         drawerView.position = .closed
-        drawerView.snapPositions = [.open, .closed]
         drawerView.delegate = self
 
         drawerView.attachTo(view: containerView)
@@ -109,6 +108,11 @@ public class DrawerPresentationManager: NSObject {
     public var drawer = DrawerView()
 
     public var presentationDelegate: DrawerPresentationDelegate?
+    
+    convenience init(snapPositions: [DrawerPosition]) {
+        self.init()
+        drawer.snapPositions = snapPositions
+    }
 }
 
 extension DrawerPresentationManager: UIViewControllerTransitioningDelegate {
