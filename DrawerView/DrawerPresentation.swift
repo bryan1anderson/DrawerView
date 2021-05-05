@@ -109,7 +109,7 @@ public class DrawerPresentationManager: NSObject {
 
     public var presentationDelegate: DrawerPresentationDelegate?
     
-    convenience init(snapPositions: [DrawerPosition]) {
+    public convenience init(snapPositions: [DrawerPosition]) {
         self.init()
         drawer.snapPositions = snapPositions
     }
