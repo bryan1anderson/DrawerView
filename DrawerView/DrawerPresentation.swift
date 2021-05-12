@@ -93,6 +93,8 @@ public class DrawerPresentationController: UIPresentationController {
     @objc optional func drawerPresentationDidEnd(_ completed: Bool)
     @objc optional func drawerDismissalWillBegin()
     @objc optional func drawerDismissalDidEnd(_ completed: Bool)
+    @objc optional func drawerDidMove(_ drawerView: DrawerView, drawerOffset: CGFloat)
+
 }
 
 extension DrawerPresentationController: DrawerViewDelegate {
@@ -101,6 +103,10 @@ extension DrawerPresentationController: DrawerViewDelegate {
         if targetPosition == .closed {
             presentedViewController.dismiss(animated: true)
         }
+    }
+    
+    public func drawerDidMove(_ drawerView: DrawerView, drawerOffset: CGFloat) {
+        presentationDelegate?.drawerDidMove?(drawerView, drawerOffset: drawerOffset)
     }
 }
 
