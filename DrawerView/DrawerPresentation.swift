@@ -100,6 +100,9 @@ public class DrawerPresentationController: UIPresentationController {
 extension DrawerPresentationController: DrawerViewDelegate {
 
     public func drawer(_ drawerView: DrawerView, willTransitionFrom startPosition: DrawerPosition, to targetPosition: DrawerPosition) {
+    }
+    
+    public func drawer(_ drawerView: DrawerView, didTransitionTo position: DrawerPosition) {
         if targetPosition == .closed {
             presentedViewController.dismiss(animated: true)
         }
