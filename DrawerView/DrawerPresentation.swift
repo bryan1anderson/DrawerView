@@ -21,7 +21,7 @@ public class DrawerPresentationController: UIPresentationController {
     private let drawerView: DrawerView
 
     private var presentationDelegate: DrawerPresentationDelegate?
-
+    
     init(presentedViewController: UIViewController,
                   presenting presentingViewController: UIViewController?,
                   drawerView: DrawerView,
@@ -94,6 +94,7 @@ public class DrawerPresentationController: UIPresentationController {
     @objc optional func drawerDismissalWillBegin()
     @objc optional func drawerDismissalDidEnd(_ completed: Bool)
     @objc optional func drawerDidMove(_ drawerView: DrawerView, drawerOffset: CGFloat)
+    var initialDrawerPosition: DrawerPosition { get }
 
 }
 
@@ -141,7 +142,7 @@ extension DrawerPresentationManager: UIViewControllerTransitioningDelegate {
     }
 
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return DrawerPresentationAnimator(presentation: .present)
+        return DrawerPresentationAnimator(presentation: .present(initialPosition: presentationDelegate?.initialDrawerPosition ?? .partiallyOpen))
     }
 
     public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
@@ -154,7 +155,7 @@ public final class DrawerPresentationAnimator: NSObject {
     let presentation: PresentationType
 
     enum PresentationType {
-      case present
+        case present(initialPosition: DrawerPosition)
       case dismiss
     }
 
@@ -177,12 +178,12 @@ extension DrawerPresentationAnimator: UIViewControllerAnimatedTransitioning {
     public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
 
         switch presentation {
-        case .present:
+        case .present(let position):
             guard let drawerView = transitionContext.view(forKey: .to) as? DrawerView else {
                 return
             }
 
-            drawerView.setPosition(.open, animated: true) { finished in
+            drawerView.setPosition(position, animated: true) { finished in
                transitionContext.completeTransition(finished)
            }
         case .dismiss:
