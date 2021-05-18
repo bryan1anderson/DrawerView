@@ -162,10 +162,13 @@ public final class DrawerPresentationAnimator: NSObject {
 }
 
 extension DrawerPresentationAnimator: UIViewControllerAnimatedTransitioning {
-    public func transitionDuration(
-        using transitionContext: UIViewControllerContextTransitioning?
-    ) -> TimeInterval {
-        return 0.0
+    public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+        switch presentation {
+        case .present:
+            return 0.0
+        case .dismiss:
+            return 0.5
+        }
     }
 
     public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
